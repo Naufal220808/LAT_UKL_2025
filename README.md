@@ -1,1 +1,23 @@
 "# LAT_UKL1_2025" 
+Pertama-tama saya menginisialisasi Prisma di project yang saya buat. Setelah Prisma berhasil diinisialisasi, saya melanjutkan dengan mengisi file schema.prisma. Di dalam file tersebut, saya membuat model database yang digunakan untuk menyimpan data yang ada di project ini, seperti model user yang berisi id, name, username, dan password.
+
+Setelah model selesai dibuat, saya melakukan proses migrasi Prisma agar struktur model tersebut dapat diterapkan ke dalam database. Sebelum melakukan migrasi, saya terlebih dahulu menghubungkan database ke project melalui file .env, dengan menuliskan variabel DATABASE_URL yang berisi alamat koneksi database yang saya gunakan.
+
+Setelah semua langkah tersebut selesai, saya dan teman-teman saya berdiskusi melalui Discord. Kami saling bertukar pikiran, menghadapi error bersama-sama, serta mencari solusi untuk memperbaiki masalah yang muncul selama proses pembuatan project ini. Melalui kerja sama tersebut, kami bisa saling belajar dan memperdalam pemahaman tentang cara kerja Prisma serta penerapannya dalam project yang kami buat.
+Setelah proses inisialisasi dan migrasi Prisma selesai, saya membuat dua file utama, yaitu auth.controller.js dan User.controller.js. Kedua file ini saya gunakan untuk mengatur sistem login dan pengelolaan data user dalam project yang saya kerjakan.
+
+Pada file auth.controller.js, saya menggunakan Prisma untuk mengambil data user dari database saat user melakukan login. Di awal, saya mengimpor PrismaClient dari @prisma/client dan membuat instance Prisma agar bisa berinteraksi dengan database. Saya juga membuat sebuah secretKey yang digunakan untuk membuat dan memverifikasi token login.
+
+Fungsi LogIn di file ini berfungsi untuk memproses data login dari user. Pertama, sistem mengambil username dan password dari input user. Setelah itu, Prisma mencari user di database berdasarkan username yang diinput. Jika datanya cocok, sistem membuat token menggunakan JWT (JSON Web Token) yang menandakan bahwa user sudah berhasil login. Sebelum data dikirim kembali ke client, password-nya dihapus agar tidak ikut terkirim dan lebih aman. Kalau proses login berhasil, maka sistem akan mengirimkan respons berisi pesan sukses dan token login yang nantinya digunakan untuk mengakses bagian aplikasi yang membutuhkan otorisasi.
+
+Selain itu, di file yang sama juga ada fungsi Authorize. Fungsinya adalah sebagai pengaman atau pemeriksa setiap request yang masuk. Jadi, setiap kali ada request ke server, sistem akan mengecek apakah ada token di dalam header request. Kalau token-nya valid, maka proses bisa dilanjutkan ke tahap berikutnya. Tapi kalau tidak valid atau tidak ada token sama sekali, sistem akan menolak aksesnya dan mengirimkan pesan bahwa user tidak punya izin untuk mengakses data tersebut.
+
+Lalu di file User.controller.js, saya membuat beberapa fungsi untuk mengatur data user. Fungsi pertama adalah addUser, yang digunakan untuk menambahkan data user baru ke database. Sebelum data dimasukkan, sistem akan memeriksa dulu apakah name, username, dan password sudah diisi. Kalau sudah lengkap, password akan dienkripsi dulu pakai md5 supaya tidak tersimpan dalam bentuk aslinya di database. Setelah data berhasil disimpan, sistem akan menghapus bagian password sebelum dikirim ke client supaya datanya tetap aman.
+
+Berikutnya ada fungsi updateUser, yang digunakan untuk memperbarui data user berdasarkan id. Pertama, sistem mencari dulu user dengan id tersebut. Kalau user ditemukan, maka data name, username, dan password akan diperbarui. Password yang baru juga akan diubah jadi bentuk md5 sebelum disimpan lagi ke database. Setelah berhasil diupdate, sistem mengirimkan data user yang sudah diperbarui tanpa menampilkan password-nya.
+
+Selain itu, ada juga fungsi findUser yang berguna untuk mencari user berdasarkan name atau username. Kalau tidak diberikan parameter pencarian, maka sistem akan menampilkan semua data user yang ada di database. Seperti biasa, password tidak ditampilkan supaya aman.
+
+Fungsi terakhir adalah userById, yang digunakan untuk menampilkan data user berdasarkan id. Fungsi ini berguna kalau kita ingin menampilkan detail user tertentu saja. Sama seperti fungsi lainnya, password tetap disembunyikan dari hasil keluaran.
+
+Secara keseluruhan, kedua file ini punya peran penting dalam sistem login dan manajemen user. File auth.controller.js menangani bagian login dan keamanan dengan token JWT, sedangkan User.controller.js digunakan untuk membuat, mengubah, mencari, dan menampilkan data user di database lewat Prisma. Keduanya saling mendukung supaya sistem bisa berjalan lancar dan aman.
